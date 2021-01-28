@@ -1,0 +1,23 @@
+{
+  "name": "new-shop",
+  "version": "1.0.0",
+  "description": "Mern stack app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LeumasCode/NewShop.git"
+  },
+  "author": "Leumas code",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LeumasCode/NewShop/issues"
+  },
+  "homepage": "https://github.com/LeumasCode/NewShop#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
