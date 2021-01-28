@@ -4,6 +4,9 @@ import Product from "../models/productModel.js";
 
 const router = express.Router();
 
+//@DESC  Fetch all Products
+//@route GET api/products
+//@access PUBLIC 
 router.get(
   "/",
   asyncHandler(async (req, res, next) => {
@@ -12,6 +15,10 @@ router.get(
     res.send(products);
   })
 );
+
+//@DESC  Fetch a single Product
+//@route GET api/products/:id
+//@access PUBLIC 
 
 router.get(
   "/:id",
