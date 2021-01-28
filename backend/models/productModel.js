@@ -1,29 +1,60 @@
 import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const reviewSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  rating: { type: Number, required: true },
+  comment: { type: String, required: true },
+}, {timestamps: true});
+
+const productSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
     name: {
       type: String,
-      required: [true, "Please enter your name"],
-    },
-    email: {
-      type: String,
-      required: [true, "Please enter your email"],
-      unique: true,
-    },
-    password: {
-      type: String,
-      required: [true, "Please enter your password"],
-    },
-    isAdmin: {
-      type: Boolean,
       required: true,
-      default: false,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    brand: {
+      type: String,
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    reviews: [reviewSchema],
+    rating: {
+      type: Number,
+      default: 4.5,
+      required: true,
+    },
+    numReviews: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    countInStock: {
+      type: Number,
+      required: true,
     },
   },
   { timestamps: true }
 );
 
-const User = mongoose.model("User", userSchema);
+const Product = mongoose.model("Product", productSchema);
 
-export default User;
+export default Product;
