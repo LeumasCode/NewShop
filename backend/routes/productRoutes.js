@@ -12,7 +12,8 @@ router.get(
   asyncHandler(async (req, res, next) => {
     const products = await Product.find();
 
-    res.send(products);
+     
+    res.json(products);
   })
 );
 
@@ -29,7 +30,7 @@ router.get(
       res.status(404);
       throw new Error(`Product not found`);
     }
-
+  
     res.json(product);
   })
 );
