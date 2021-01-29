@@ -1,7 +1,7 @@
 import { CART_ADD_ITEM } from "../constants/cartConstants";
 
 export const cartReducer = (state = { cartItems: [] }, action) => {
-  switch (action.payload) {
+  switch (action.type) {
     case CART_ADD_ITEM:
       const item = action.payload;
 
@@ -16,7 +16,8 @@ export const cartReducer = (state = { cartItems: [] }, action) => {
             x.product === existItem.product ? item : x
           ),
         };
-      } else { // else add the item to the cartItems
+      } else {
+        // else add the item to the cartItems
         return {
           ...state,
 
