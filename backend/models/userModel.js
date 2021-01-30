@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: [true, "Please enter your password"],
-      select: false
+      select: false,
     },
     isAdmin: {
       type: Boolean,
@@ -25,6 +25,15 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 12);
+
+  next();
+});
 
 userSchema.methods.comparePassword = async function (enteredPassword) {
   // if (!this.isModified("password")) {

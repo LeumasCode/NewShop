@@ -33,6 +33,39 @@ export const authUser = asyncHandler(async (req, res, next) => {
   });
 });
 
+//@DESC  Register a new User and get Token
+//@route POST api/users
+//@access PUBLIC
+
+export const registerUser = asyncHandler(async (req, res, next) => {
+  const { email, password, name } = req.body;
+
+  // 1) Check if email and password exist
+  if (!email || !password || !name) {
+    res.status(401);
+    throw new Error("Please provide email and password");
+  }
+
+  // check if user exist
+  const userExist = await User.findOne({ email });
+
+  if (userExist) {
+    res.status(400);
+    throw new Error("User already exist");
+  }
+
+  // create a new User
+  const user = await User.create(req.body);
+// generate token
+  const token = generateToken(user._id);
+
+  res.status(201).json({
+    status: "success",
+    user,
+    token,
+  });
+});
+
 //@DESC  Get User Profile
 //@route GET api/users/profile
 //@access Private
