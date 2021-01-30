@@ -5,11 +5,14 @@ import color from "colors";
 
 // ROUTES
 import productRouter from "./routes/productRoutes.js";
+import userRouter from "./routes/userRoutes.js";
 
 // MIDDLEWARES
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 
 const app = express();
+
+app.use(express.json());
 
 // CONFIGURE THE .ENV
 dotenv.config();
@@ -21,7 +24,9 @@ app.get("/", (req, res, next) => {
   res.send("api is running");
 });
 
+//Mount Routers
 app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
 // Handle error for non routes
 app.use(notFound);
