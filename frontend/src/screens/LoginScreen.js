@@ -3,7 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import { login } from "../actions/loginActions";
+import { login } from "../actions/userActions";
 import Loader from "../components/Loader.js";
 import FormContainer from "../components/FormContainer";
 
@@ -12,7 +12,7 @@ const LoginScreen = ({ location, history }) => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const { loading, error, userInfo } = useSelector((state) => state.user);
+  const { loading, error, userInfo } = useSelector((state) => state.userLogin);
 
   
 

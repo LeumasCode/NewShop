@@ -27,7 +27,6 @@ export const authUser = asyncHandler(async (req, res, next) => {
   const token = generateToken(user._id);
 
   res.status(200).json({
-    status: "success",
     user,
     token,
   });
