@@ -55,7 +55,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
 
   // create a new User
   const user = await User.create(req.body);
-// generate token
+  // generate token
   const token = generateToken(user._id);
 
   res.status(201).json({
@@ -80,5 +80,29 @@ export const getUserProfile = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     user,
+  });
+});
+
+//@DESC  UPDATE User Profile
+//@route PATCH api/users/profile
+//@access Private
+
+export const updateUserProfile = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  user.name = req.body.name || user.name
+  user.email = req.body.email || user.email;
+  user.password = req.body.password || user.password;
+
+  const updatedUser = await user.save()
+
+  res.status(200).json({
+    updatedUser,
   });
 });
