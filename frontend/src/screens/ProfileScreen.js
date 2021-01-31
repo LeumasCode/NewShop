@@ -3,9 +3,8 @@ import { Link } from "react-router-dom";
 import { Form, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import { register } from "../actions/userActions";
+import { getUserDetails } from "../actions/userActions";
 import Loader from "../components/Loader.js";
-import FormContainer from "../components/FormContainer";
 
 const ProfileScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -15,18 +14,28 @@ const ProfileScreen = ({ location, history }) => {
   const [message, setMessage] = useState(null);
 
   const dispatch = useDispatch();
-  const { loading, error, userInfo } = useSelector(
-    (state) => state.userRegister
-  );
+  const { loading, error, user } = useSelector((state) => state.userDetails);
 
-  const redirect = location.search ? location.search.split("=")[1] : "/";
+  // check if the user is Logged in
+
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   //check if the user is already loggedIn
   useEffect(() => {
-    if (userInfo) {
-      history.push(redirect);
+      //check if the user is loggedIn
+    if (!userInfo) {
+      history.push("/login"); // if not logged in, redirect to login
+    } else {
+        //check if the user details is NOT available, IF not, dispatch getUserDetails
+      if (!user.name) {
+        dispatch(getUserDetails("profile"));
+      }else{
+        //if we have the userDetails, set the name, email in the text fields
+        setName(user.name)
+        setEmail(user.email)
+      }
     }
-  }, [history, redirect, userInfo]);
+  }, [history, userInfo, dispatch, user]);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -35,8 +44,8 @@ const ProfileScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage("Password do not match");
     } else {
-      // DISPATCH REGISTER
-      dispatch(register(name, email, password));
+      // DISPATCH UPDATE PROFILE
+      
     }
   };
 
