@@ -15,6 +15,6 @@ router.route("/").post(registerUser);
 
 router.use(protect);
 
-router.route("/profile").get(getUserProfile).patch(updateUserProfile)
+router.route("/profile").get(getUserProfile).put(updateUserProfile);
 
 export default router;

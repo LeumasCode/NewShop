@@ -78,6 +78,7 @@ export const getUserProfile = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
+    _id: user._id,
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
@@ -96,13 +97,21 @@ export const updateUserProfile = asyncHandler(async (req, res, next) => {
     throw new Error("User not found");
   }
 
-  user.name = req.body.name || user.name;
-  user.email = req.body.email || user.email;
-  user.password = req.body.password || user.password;
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
 
-  const updatedUser = await user.save();
+    if (req.body.password) {
+      user.password = req.body.password || user.password;
+    }
+    const updatedUser = await user.save();
 
-  res.status(200).json({
-    updatedUser,
-  });
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
+    });
+  }
 });
