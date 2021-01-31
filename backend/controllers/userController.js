@@ -78,8 +78,9 @@ export const getUserProfile = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    status: "success",
-    user,
+    name: user.name,
+    email: user.email,
+    isAdmin: user.isAdmin,
   });
 });
 
@@ -90,17 +91,16 @@ export const getUserProfile = asyncHandler(async (req, res, next) => {
 export const updateUserProfile = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
 
-
   if (!user) {
     res.status(404);
     throw new Error("User not found");
   }
 
-  user.name = req.body.name || user.name
+  user.name = req.body.name || user.name;
   user.email = req.body.email || user.email;
   user.password = req.body.password || user.password;
 
-  const updatedUser = await user.save()
+  const updatedUser = await user.save();
 
   res.status(200).json({
     updatedUser,
