@@ -42,7 +42,7 @@ export const registerUser = asyncHandler(async (req, res, next) => {
   // 1) Check if email and password exist
   if (!email || !password || !name) {
     res.status(401);
-    throw new Error("Please provide email and password");
+    throw new Error("Please provide name, email and password");
   }
 
   // check if user exist
