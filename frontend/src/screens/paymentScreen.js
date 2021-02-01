@@ -43,7 +43,16 @@ const PaymentScreen = ({ history }) => {
               name="paymentMethod"
               value="flutterwave"
               checked
-              onChange={(e)=> setPaymentMethod(e.target.value)}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            ></Form.Check>
+
+            <Form.Check
+              type="radio"
+              label="Paystack or Credit Card"
+              id="paystack"
+              name="paymentMethod"
+              value="Paystack"
+              onChange={(e) => setPaymentMethod(e.target.value)}
             ></Form.Check>
           </Col>
         </Form.Group>
