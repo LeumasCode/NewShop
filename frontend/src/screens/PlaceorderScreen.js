@@ -16,6 +16,7 @@ const PlaceorderScreen = () => {
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
+            {/* display the shipping address */}
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
@@ -25,6 +26,13 @@ const PlaceorderScreen = () => {
                 {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country},
               </p>
+            </ListGroup.Item>
+
+            {/* display the payment method */}
+            <ListGroup.Item>
+              <h2>Payment Method </h2>
+              <strong>Method: </strong>
+              {cart.paymentMethod}
             </ListGroup.Item>
           </ListGroup>
         </Col>
