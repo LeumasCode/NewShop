@@ -6,6 +6,7 @@ import color from "colors";
 // ROUTES
 import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import orderRouter from "./routes/orderRoutes.js";
 
 // MIDDLEWARES
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
@@ -27,6 +28,7 @@ app.get("/", (req, res, next) => {
 //Mount Routers
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
+app.use("/api/orders", orderRouter);
 
 // Handle error for non routes
 app.use(notFound);
