@@ -10,6 +10,29 @@ import { Link } from "react-router-dom";
 const PlaceorderScreen = () => {
   const cart = useSelector((state) => state.cart);
 
+  // Calculate Prices
+
+  const addDecimals = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+
+  cart.itemsPrice = addDecimals(
+    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+  );
+
+  // calculate shipping
+  cart.shippingPrice = addDecimals(cart.itemsPrice < 2000 ? 0 : 1000);
+
+  // calculate taxPrice Nigeria(.75)
+  cart.taxPrice = addDecimals(Number((0.07 * cart.itemsPrice).toFixed(2)));
+
+  // calculate the total Price
+  cart.totalPrice = (
+    Number(cart.itemsPrice) +
+    Number(cart.shippingPrice) +
+    Number(cart.taxPrice)
+  ).toFixed(2);
+
   const placeOrderHandler = () => {
     console.log("order");
   };
