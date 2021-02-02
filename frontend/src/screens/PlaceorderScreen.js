@@ -1,11 +1,9 @@
 import React, { useEffect } from "react";
 import { ListGroup, Image, Card, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { saveShippingAddress } from "../actions/cartActions.js";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 import Message from "../components/Message";
-import Loader from "../components/Loader.js";
-import { Link } from "react-router-dom";
+import {Link} from 'react-router-dom'
 import { createOrder } from "../actions/orderActions.js";
 
 const PlaceorderScreen = ({ history }) => {
@@ -58,7 +56,7 @@ const PlaceorderScreen = ({ history }) => {
     if (success) {
       history.push(`/order/${order._id}`);
     }
-  }, [history, success]);
+  }, [history, success, order._id]);
 
   return (
     <>

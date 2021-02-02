@@ -70,7 +70,7 @@ export const updateOrderToPaid = asyncHandler(async (req, res, next) => {
     (order.paymentResult = {
       id: req.body.transaction_id,
       status: req.body.status,
-      update_time: Date.now(),
+      update_time: new Date().toLocaleDateString(),
       email_address: req.body.customer.email,
     });
   const updatedOrder = await order.save();
@@ -82,7 +82,6 @@ export const updateOrderToPaid = asyncHandler(async (req, res, next) => {
 //@route  GET api/orders/myOrders
 //@access PRIVATE
 export const getMyOrders = asyncHandler(async (req, res, next) => {
-  
   const orders = await Order.find({ user: req.user._id });
 
   if (!orders) {
