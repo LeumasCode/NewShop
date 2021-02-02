@@ -1,5 +1,4 @@
 import asyncHandler from "express-async-handler";
-import OrderScreen from "../../frontend/src/screens/OrderScreen.js";
 import Order from "../models/orderModel.js";
 
 //@DESC  Create new Order
@@ -83,9 +82,10 @@ export const updateOrderToPaid = asyncHandler(async (req, res, next) => {
 //@route  GET api/orders/myOrders
 //@access PRIVATE
 export const getMyOrders = asyncHandler(async (req, res, next) => {
+  
   const orders = await Order.find({ user: req.user._id });
 
-  if (!order) {
+  if (!orders) {
     res.status(404);
     throw new Error("Order not found");
     return;
