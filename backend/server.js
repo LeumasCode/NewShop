@@ -30,6 +30,10 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
+app.get("/api/config/flutterwave", (req, res, next) => {
+  res.send(process.env.FLUTTERWAVE_PUBLIC_ID);
+});
+
 // Handle error for non routes
 app.use(notFound);
 

@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader.js";
 import { Link } from "react-router-dom";
 import { getOrderDetails } from "../actions/orderActions.js";
+import Flutterwave from "../components/Flutterwave";
 
 const OrderScreen = ({ match }) => {
   const orderId = match.params.id;
@@ -14,10 +15,17 @@ const OrderScreen = ({ match }) => {
   // get the order details from state
   const { order, loading, error } = useSelector((state) => state.orderDetails);
 
+  // get the order details from state
+  const {
+    success: successPay,
+    loading: loadingPay,
+    error: errorPay,
+  } = useSelector((state) => state.orderPay);
+
   // on-load of the screen fetch the order
   useEffect(() => {
     dispatch(getOrderDetails(orderId));
-  }, []);
+  }, [orderId, dispatch]);
 
   // Calculate Prices
   if (!loading) {
@@ -148,6 +156,22 @@ const OrderScreen = ({ match }) => {
                   <Col>₦{order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {loadingPay ? (
+                    <Loader />
+                  ) : (
+                    <Flutterwave
+                      successPay={successPay}
+                      userName={order.user.name}
+                      userEmail={order.user.email}
+                      amount={order.totalPrice}
+                      orderId = {orderId}
+                    />
+                  )}
+                </ListGroup.Item>
+              )}
             </ListGroup>
           </Card>
         </Col>
