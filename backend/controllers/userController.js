@@ -160,7 +160,7 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
 //@access Private/Admin
 
 export const getUser = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
+  const user = await User.findById(req.params.id).select("-password");
 
   if (!user) {
     res.status(404);
@@ -171,7 +171,7 @@ export const getUser = asyncHandler(async (req, res, next) => {
 });
 
 //@DESC  Update a User
-//@route DELETE api/users/:id
+//@route PUT api/users/:id
 //@access Private/Admin
 
 export const updateUser = asyncHandler(async (req, res, next) => {
@@ -182,7 +182,19 @@ export const updateUser = asyncHandler(async (req, res, next) => {
     throw new Error("User not found");
   }
 
-  const updatedUser = {};
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    user.isAdmin = req.body.isAdmin || user.isAdmin
 
-  res.status(200).json({ message: "user removed" });
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      
+    });
+  }
 });

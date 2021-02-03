@@ -2,9 +2,11 @@ import express from "express";
 import {
   authUser,
   deleteUser,
+  getUser,
   getUserProfile,
   getUsers,
   registerUser,
+  updateUser,
   updateUserProfile,
 } from "../controllers/userController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
@@ -19,6 +21,8 @@ router.use(protect);
 
 router.route("/profile").get(getUserProfile).put(updateUserProfile);
 
-router.route("/:id").delete(isAdmin, deleteUser);
+router.use(isAdmin);
+
+router.route("/:id").delete(deleteUser).get(getUser).put(updateUser);
 
 export default router;
