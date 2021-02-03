@@ -7,14 +7,26 @@ import Message from "../components/Message";
 import { listUsers } from "../actions/userActions";
 import Loader from "../components/Loader.js";
 
-const UserListScreen = () => {
+const UserListScreen = ({history})=> {
   const dispatch = useDispatch();
+
+  //Bring the user list into the component
   const { loading, error, users } = useSelector((state) => state.userList);
+
+  // Bring the userLogged in into the component
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  console.log(userInfo);
 
   // onload of the screen, dispatch the listUser Action
   useEffect(() => {
-    dispatch(listUsers());
-  }, [dispatch]);
+      if(userInfo && userInfo.isAdmin){
+           dispatch(listUsers());
+      }else{
+          history.push('/login')
+      }
+   
+  }, [dispatch, history]);
 
 
   //Handler to delete a user

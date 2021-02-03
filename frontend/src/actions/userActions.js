@@ -7,6 +7,7 @@ import {
   USER_DETAILS_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_REQUEST,
+  USER_LIST_RESET,
   USER_LIST_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -125,7 +126,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     const { userInfo } = getState().userLogin;
     // 1) Dispatch the request
     dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-    console.log(user);
+    console.log(userInfo);
 
     // 2) Make api request
     const config = {
@@ -183,4 +184,5 @@ export const logout = () => (dispatch) => {
   dispatch({ type: USER_LOGOUT });
   dispatch({ type: USER_DETAILS_RESET });
   dispatch({ type: ORDER_LIST_MY_RESET });
+  dispatch({type: USER_LIST_RESET})
 };
