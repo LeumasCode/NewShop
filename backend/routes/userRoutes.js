@@ -19,6 +19,6 @@ router.use(protect);
 
 router.route("/profile").get(getUserProfile).put(updateUserProfile);
 
-router.route('/:id').delete(deleteUser)
+router.route("/:id").delete(isAdmin, deleteUser);
 
 export default router;

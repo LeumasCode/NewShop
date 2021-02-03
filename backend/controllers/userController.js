@@ -138,7 +138,6 @@ export const getUsers = asyncHandler(async (req, res, next) => {
   res.status(200).json(users);
 });
 
-
 //@DESC  Delete a User
 //@route DELETE api/users/:id
 //@access Private/Admin
@@ -151,7 +150,39 @@ export const deleteUser = asyncHandler(async (req, res, next) => {
     throw new Error("User not found");
   }
 
-  await user.remove() 
+  await user.remove();
 
-  res.status(200).json({message: 'user removed'});
+  res.status(200).json({ message: "user removed" });
+});
+
+//@DESC  Get a User by ID
+//@route GET api/users/:id
+//@access Private/Admin
+
+export const getUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  res.status(200).json(user);
+});
+
+//@DESC  Update a User
+//@route DELETE api/users/:id
+//@access Private/Admin
+
+export const updateUser = asyncHandler(async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    res.status(404);
+    throw new Error("User not found");
+  }
+
+  const updatedUser = {};
+
+  res.status(200).json({ message: "user removed" });
 });
