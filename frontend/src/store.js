@@ -9,6 +9,7 @@ import {
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import {
+  userDeleteReducer,
   userDetailsReducer,
   userListReducer,
   userLoginReducer,
@@ -34,7 +35,8 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderListMy: orderListMyReducer,
-  userList: userListReducer
+  userList: userListReducer,
+  userDelete: userDeleteReducer,
 });
 
 // get cartItems from localStroage

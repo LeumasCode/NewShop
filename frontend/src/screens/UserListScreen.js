@@ -4,10 +4,10 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import { listUsers } from "../actions/userActions";
+import { deleteUser, listUsers } from "../actions/userActions";
 import Loader from "../components/Loader.js";
 
-const UserListScreen = ({history})=> {
+const UserListScreen = ({ history }) => {
   const dispatch = useDispatch();
 
   //Bring the user list into the component
@@ -16,23 +16,24 @@ const UserListScreen = ({history})=> {
   // Bring the userLogged in into the component
   const { userInfo } = useSelector((state) => state.userLogin);
 
-  console.log(userInfo);
+  // Bring the userLogged in into the component
+  const { success: successDelete } = useSelector((state) => state.userDelete);
 
   // onload of the screen, dispatch the listUser Action
   useEffect(() => {
-      if(userInfo && userInfo.isAdmin){
-           dispatch(listUsers());
-      }else{
-          history.push('/login')
-      }
-   
-  }, [dispatch, history]);
-
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(listUsers());
+    } else {
+      history.push("/login");
+    }
+  }, [dispatch, history, successDelete]);
 
   //Handler to delete a user
-  const deleteHandler = (userId) =>{
-
-  }
+  const deleteHandler = (userId) => {
+    if (window.confirm("Are you sure?")) {
+      dispatch(deleteUser(userId));
+    }
+  };
 
   return (
     <>
@@ -79,7 +80,7 @@ const UserListScreen = ({history})=> {
                     className="btn-sm"
                     onClick={() => deleteHandler(user._id)}
                   >
-                      <i className='fas fa-trash' />
+                    <i className="fas fa-trash" />
                   </Button>
                 </td>
               </tr>
