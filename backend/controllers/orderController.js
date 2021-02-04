@@ -92,3 +92,21 @@ export const getMyOrders = asyncHandler(async (req, res, next) => {
 
   res.status(200).json(orders);
 });
+
+
+
+
+//@DESC  Get Orders
+//@route  GET api/orders
+//@access PRIVATE ADMIN
+export const getOrders = asyncHandler(async (req, res, next) => {
+  const orders = await Order.find({}).populate('user', 'id, name');
+
+  if (!orders) {
+    res.status(404);
+    throw new Error("Orders not found");
+    return;
+  }
+
+  res.status(200).json(orders);
+});

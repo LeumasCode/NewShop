@@ -1,11 +1,11 @@
 import express from "express";
-import { addOrderItems, getMyOrders, getOrderById, updateOrderToPaid } from "../controllers/orderController.js";
-import { protect } from "../middleware/authMiddleware.js";
+import { addOrderItems, getMyOrders, getOrderById, getOrders, updateOrderToPaid } from "../controllers/orderController.js";
+import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
 router.use(protect);
-router.post("/", addOrderItems);
+router.route("/").post(addOrderItems).get( isAdmin,getOrders);
 router.get("/myorders", getMyOrders);
 
 router.get('/:id', getOrderById)
