@@ -8,8 +8,11 @@ import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getProducts)
+router.get("/", getProducts);
 
-router.get("/:id", getProductById).delete(protect, isAdmin, deleteProduct);
+router
+  .route("/:id")
+  .get(getProductById)
+  .delete(protect, isAdmin, deleteProduct);
 
 export default router;
