@@ -4,7 +4,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { Table, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
-import { listProducts } from "../actions/productActions";
+import { listProducts, deleteProduct } from "../actions/productActions";
 import Loader from "../components/Loader.js";
 
 const ProductListScreen = ({ history, match }) => {
@@ -18,6 +18,13 @@ const ProductListScreen = ({ history, match }) => {
   // Bring the userLogged in into the component
   const { userInfo } = useSelector((state) => state.userLogin);
 
+  // Bring the userLogged in into the component
+  const {
+    success: successDelete,
+    loading: loadingDelete,
+    error: errorDelete,
+  } = useSelector((state) => state.productDelete);
+
   // onload of the screen, dispatch the listProduct Action
   useEffect(() => {
     if (userInfo && userInfo.isAdmin) {
@@ -25,19 +32,20 @@ const ProductListScreen = ({ history, match }) => {
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, history, userInfo, successDelete]);
 
   //Handler to delete a product
   const deleteHandler = (productId) => {
     if (window.confirm("Are you sure?")) {
       // DELETE PRODUCT
+      dispatch(deleteProduct(productId));
     }
   };
 
   // Handler to create new product
-  const createProductHandler =()=>{
-// CREATE PRODUCT
-  }
+  const createProductHandler = () => {
+    // CREATE PRODUCT
+  };
 
   return (
     <>
@@ -51,6 +59,8 @@ const ProductListScreen = ({ history, match }) => {
           </Button>
         </Col>
       </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant="danger">{error}</Message>}
 
       {loading ? (
         <Loader />
