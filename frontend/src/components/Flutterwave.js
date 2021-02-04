@@ -60,7 +60,6 @@ export default function App({ orderId, userName, userEmail, amount }) {
           handleFlutterPayment({
             callback: (response) => {
               //dispatch the payment result
-              console.log(response);
               dispatch(payOrder(orderId, response));
              
               //dispatch refresh payOrder
