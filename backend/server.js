@@ -1,4 +1,4 @@
-import path from 'path'
+import path from "path";
 import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
@@ -9,7 +9,6 @@ import productRouter from "./routes/productRoutes.js";
 import userRouter from "./routes/userRoutes.js";
 import orderRouter from "./routes/orderRoutes.js";
 import uploadRouter from "./routes/uploadRoutes.js";
-
 
 // MIDDLEWARES
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
@@ -34,10 +33,8 @@ app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/upload", uploadRouter);
 
-
-const __dirname = path.resolve()
-app.use('/uploads', express.static(path.join(__dirname, '/uploads' )))
-
+const __dirname = path.resolve();
+app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 
 // send flutterwave public key
 app.get("/api/config/flutterwave", (req, res, next) => {
