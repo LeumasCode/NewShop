@@ -40,9 +40,11 @@ const OrderListScreen = ({ history }) => {
           <thead>
             <tr>
               <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>ADMIN</th>
+              <th>USER</th>
+              <th>DATE</th>
+              <th>TOTAL</th>
+              <th>PAID</th>
+              <th>DELIVERED</th>
               <th></th>
             </tr>
           </thead>
@@ -51,30 +53,35 @@ const OrderListScreen = ({ history }) => {
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{order.name}</td>
+                <td>{order.user && order.user.name}</td>
                 <td>
-                  <a href={`mailto: ${order.email}`}>{order.email}</a>
+                  {order.createdAt.substring(0, 10)}
                 </td>
                 <td>
-                  {order.isAdmin ? (
-                    <i className="fas fa-check" style={{ color: "green" }} />
+                  ₦{order.totalPrice}
+                </td>
+                <td>
+                  {order.isPaid ? (
+                      order.paidAt.substring(0, 10)
                   ) : (
-                    <i className="fas fa-times" style={{ color: "red" }} />
+                      <i className='fas fa-times' style={{color: 'red'}} />
+                  )}
+                </td>
+
+                 <td>
+                  {order.isDelivered ? (
+                      order.deliveredAt.substring(0, 10)
+                  ) : (
+                      <i className='fas fa-times' style={{color: 'red'}} />
                   )}
                 </td>
                 <td>
-                  <LinkContainer to={`/admin/order/${order._id}/edit`}>
+                  <LinkContainer to={`/admin/order/${order._id}`}>
                     <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit" />
+                      Details
                     </Button>
                   </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => }
-                  >
-                    <i className="fas fa-trash" />
-                  </Button>
+                  
                 </td>
               </tr>
             ))}
