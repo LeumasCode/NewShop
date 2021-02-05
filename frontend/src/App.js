@@ -39,8 +39,9 @@ const App = () => {
           <Route path="/product/:id" exact component={ProductScreen} />
           <Route path="/order/:id" exact component={OrderScreen} />
           <Route path="/cart/:id?" component={CartScreen} />
-          <Route path="/search/:keyword" component={HomeScreen} />
+          <Route path="/search/:keyword" exact component={HomeScreen} />
           <Route path="/page/:pageNumber" component={HomeScreen} />
+          <Route path="/search/:keyword/page/:pageNumber" component={HomeScreen} />
           <Route path="/" exact component={HomeScreen} />
         </Container>
       </main>
