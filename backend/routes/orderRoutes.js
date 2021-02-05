@@ -1,5 +1,5 @@
 import express from "express";
-import { addOrderItems, getMyOrders, getOrderById, getOrders, updateOrderToPaid } from "../controllers/orderController.js";
+import { addOrderItems, getMyOrders, getOrderById, getOrders, updateOrderToDelivered, updateOrderToPaid } from "../controllers/orderController.js";
 import { isAdmin, protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -11,6 +11,8 @@ router.get("/myorders", getMyOrders);
 router.get('/:id', getOrderById)
 
 router.put('/:id/pay', updateOrderToPaid)
+
+router.put('/:id/deliver', isAdmin, updateOrderToDelivered)
 
 
 
