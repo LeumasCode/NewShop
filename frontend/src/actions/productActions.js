@@ -20,14 +20,14 @@ import {
   PRODUCT_UPDATE_SUCCESS,
 } from "../constants/productConstants";
 
-export const listProducts = (keyword='') => async (dispatch) => {
+export const listProducts = (keyword='', pageNumber='') => async (dispatch) => {
   try {
     // dispatch the request action first
     dispatch({ type: PRODUCT_LIST_REQUEST });
 
     // Make the request
-    const { data } = await axios.get(`/api/products?keyword=${keyword}`);
-
+    const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
+ 
     // If successful dispatch success
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
