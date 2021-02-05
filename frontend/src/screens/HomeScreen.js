@@ -6,11 +6,10 @@ import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-const HomeScreen = ({match}) => {
+const HomeScreen = ({ match }) => {
+  const keyword = match.params.keyword;
 
-  const keyword = match.params.keyword
-
-
+  const pageNmuber = match.params.pageNumber || 1;
 
   const { loading, error, products } = useSelector(
     (state) => state.productList
@@ -18,8 +17,8 @@ const HomeScreen = ({match}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(listProducts(keyword));
-  }, [dispatch, keyword]);
+    dispatch(listProducts(keyword, pageNmuber));
+  }, [dispatch, keyword, pageNmuber]);
 
   return (
     <>
