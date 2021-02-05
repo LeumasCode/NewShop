@@ -5,22 +5,25 @@ import Product from "../models/productModel.js";
 //@route GET api/products
 //@access PUBLIC
 export const getProducts = asyncHandler(async (req, res, next) => {
-  const pageSize = 10
-  const page = Number(req.query.pageNumber) || 1
-
+  const pageSize = 10;
+  const page = Number(req.query.pageNumber) || 1;
 
   // Search functionality
-  const keyword = req.query.keyword ? {
-    name: {
-      $regex:req.query.keyword,
-      $options: 'i'
-    }
-  } : {}
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: "i",
+        },
+      }
+    : {};
 
-  const count = await Product.countDocuments({...keyword})
-  const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize * (page - 1));
+  const count = await Product.countDocuments({ ...keyword });
+  const products = await Product.find({ ...keyword })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
 
-  res.json({products, page, pages: Math.ceil(count / pageSize)});
+  res.json({ products, page, pages: Math.ceil(count / pageSize) });
 });
 
 //@DESC  Fetch a single Product
@@ -148,18 +151,17 @@ export const deleteProduct = asyncHandler(async (req, res, next) => {
   res.status(204).json({ massage: "product deleted" });
 });
 
-
 //@DESC  GET top rated Product
 //@route GET api/products/top
 //@access PUBLIC
 export const getTopProducts = asyncHandler(async (req, res, next) => {
-  const products = await Product.find({}).sort({rating: -1}).limit(4);
+  const products = await Product.find({}).sort({ rating: -1 }).limit(2);
 
   if (!products) {
     res.status(404);
     throw new Error(`Products not found`);
   }
+  console.log(products);
 
-
-  res.status(204).json(products);
+  res.status(200).json(products);
 });
