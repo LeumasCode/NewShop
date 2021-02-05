@@ -189,3 +189,37 @@ export const createProductReview = (productId, review) => async (
     });
   }
 };
+
+
+export const getTopRated = (productId, review) => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const { userInfo } = getState().userLogin;
+    // DISPATCH THE REQUEST
+    dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    // CREATE_REVIEW A SINGLE PRODUCT
+    await axios.post(`/api/products/${productId}/reviews`, review, config);
+
+    // if successful, dispatch success
+    dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS });
+  } catch (error) {
+    //if error
+    dispatch({
+      type: PRODUCT_CREATE_REVIEW_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};

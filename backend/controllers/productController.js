@@ -5,7 +5,7 @@ import Product from "../models/productModel.js";
 //@route GET api/products
 //@access PUBLIC
 export const getProducts = asyncHandler(async (req, res, next) => {
-  const pageSize = 2
+  const pageSize = 10
   const page = Number(req.query.pageNumber) || 1
 
 
@@ -146,4 +146,20 @@ export const deleteProduct = asyncHandler(async (req, res, next) => {
 
   await product.remove();
   res.status(204).json({ massage: "product deleted" });
+});
+
+
+//@DESC  GET top rated Product
+//@route GET api/products/top
+//@access PUBLIC
+export const getTopProducts = asyncHandler(async (req, res, next) => {
+  const products = await Product.find({}).sort({rating: -1}).limit(4);
+
+  if (!products) {
+    res.status(404);
+    throw new Error(`Products not found`);
+  }
+
+
+  res.status(204).json(products);
 });
