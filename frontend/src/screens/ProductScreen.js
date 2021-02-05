@@ -17,13 +17,23 @@ import Message from "../components/Message";
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   const dispatch = useDispatch();
   const { loading, error, product } = useSelector(
     (state) => state.productDetails
   );
 
-  useEffect(() => {
+  const {
+    loading: loadingProductReview,
+    error: errorProductReview,
+    success: successProductReview,
+  } = useSelector((state) => state.productCreateReview);
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  useEffect(() => { 
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match.params.id]);
 
