@@ -119,7 +119,8 @@ export const updateOrderToDelivered = asyncHandler(async (req, res, next) => {
     throw new Error("Order not found");
     return;
   }
-  (order.isDelivered = true)((order.deliveredAt = Date.now()));
+  order.isDelivered = true;
+  order.deliveredAt = Date.now();
 
   const updatedOrder = await order.save();
 

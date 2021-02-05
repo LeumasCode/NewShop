@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
-import { ListGroup, Image, Card, Row, Col} from "react-bootstrap";
+import { ListGroup, Image, Card, Row, Col, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader.js";
 import { Link } from "react-router-dom";
-import { getOrderDetails } from "../actions/orderActions.js";
+import { getOrderDetails, deliverOrder } from "../actions/orderActions.js";
 import Flutterwave from "../components/Flutterwave";
+import { ORDER_DELIVER_RESET } from "../constants/orderConstants";
 
-const OrderScreen = ({ match }) => {
+const OrderScreen = ({ match, history }) => {
   const orderId = match.params.id;
   const dispatch = useDispatch();
 
@@ -21,10 +22,23 @@ const OrderScreen = ({ match }) => {
     error: errorPay,
   } = useSelector((state) => state.orderPay);
 
+  // get the order deliver from state
+  const {
+    success: successDeliver,
+    loading: loadingDeliver,
+    error: errorDeliver,
+  } = useSelector((state) => state.orderDeliver);
+
+  //get user from state
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   // on-load of the screen fetch the order
   useEffect(() => {
+    if(!userInfo){
+      history.push('/login')
+    }
     dispatch(getOrderDetails(orderId));
-  }, [orderId, dispatch]);
+  }, [orderId, dispatch, successDeliver]);
 
   // Calculate Prices
   if (!loading) {
@@ -36,6 +50,10 @@ const OrderScreen = ({ match }) => {
       order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
     );
   }
+
+  const deliverHandler = () => {
+    dispatch(deliverOrder(orderId));
+  };
 
   return loading ? (
     <Loader />
@@ -166,9 +184,19 @@ const OrderScreen = ({ match }) => {
                       userName={order.user.name}
                       userEmail={order.user.email}
                       amount={order.totalPrice}
-                      orderId = {orderId}
+                      orderId={orderId}
                     />
                   )}
+                </ListGroup.Item>
+              )}
+              {loadingDeliver && <Loader />}
+              {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <ListGroup.Item>
+                  <Button
+                    className="btn btn-block"
+                    type="button"
+                    onClick={deliverHandler}
+                  >Mark As Delivered</Button>
                 </ListGroup.Item>
               )}
             </ListGroup>

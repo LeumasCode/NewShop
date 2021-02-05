@@ -3,6 +3,9 @@ import {
   ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
+  ORDER_DELIVER_FAIL,
+  ORDER_DELIVER_REQUEST,
+  ORDER_DELIVER_SUCCESS,
   ORDER_DETAILS_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
@@ -116,12 +119,41 @@ export const payOrder = (orderId, paymentResult) => async (
   }
 };
 
+export const deliverOrder = (orderId) => async (dispatch, getState) => {
+  try {
+    // dispatch the request
+    dispatch({ type: ORDER_DELIVER_REQUEST });
 
+    //get the user info
+    const { userInfo } = getState().userLogin;
 
-export const listMyOrders = () => async (
-  dispatch,
-  getState
-) => {
+    // 2) Make api request
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+    await axios.put(
+      `/api/orders/${orderId}/deliver`,
+      {},
+      config
+    );
+
+    // dispatch the success
+    dispatch({ type: ORDER_DELIVER_SUCCESS });
+  } catch (error) {
+    dispatch({
+      // if error
+      type: ORDER_DELIVER_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listMyOrders = () => async (dispatch, getState) => {
   try {
     // dispatch the request
     dispatch({ type: ORDER_LIST_MY_REQUEST });
@@ -135,10 +167,7 @@ export const listMyOrders = () => async (
         Authorization: `Bearer ${userInfo.token}`,
       },
     };
-    const { data } = await axios.get(
-      `/api/orders/myorders`,
-      config
-    );
+    const { data } = await axios.get(`/api/orders/myorders`, config);
 
     // dispatch the success
     dispatch({ type: ORDER_LIST_MY_SUCCESS, payload: data });
@@ -153,7 +182,6 @@ export const listMyOrders = () => async (
     });
   }
 };
-
 
 export const listOrders = () => async (dispatch, getState) => {
   try {
