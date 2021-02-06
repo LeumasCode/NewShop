@@ -30,9 +30,7 @@ if(process.env.NODE_ENV === 'development'){
 // DATABASE CONNECTION
 
 connectDB();
-app.get("/", (req, res, next) => {
-  res.send("api is running");
-});
+
 
 //Mount Routers
 app.use("/api/products", productRouter);
@@ -47,6 +45,16 @@ app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
 app.get("/api/config/flutterwave", (req, res, next) => {
   res.send(process.env.FLUTTERWAVE_PUBLIC_ID);
 });
+
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static(path.join(__dirname, '/frontend/build')))
+
+  app.get('*', (req, res)=> res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html')))
+}else{
+  app.get("/", (req, res, next) => {
+    res.send("api is running");
+  });
+}
 
 // Handle error for non routes
 app.use(notFound);
